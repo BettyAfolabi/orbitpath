@@ -52,5 +52,33 @@ export interface LabelEntry {
 export interface ISSPosition {
   latitude: number;
   longitude: number;
+  altitude: number;
+  velocity: number;
   timestamp: number;
+}
+
+export interface GlobeInstance {
+  // Config
+  globeImageUrl: (url: string) => GlobeInstance;
+  bumpImageUrl: (url: string) => GlobeInstance;
+  backgroundImageUrl: (url: string) => GlobeInstance;
+  atmosphereColor: (color: string) => GlobeInstance;
+  atmosphereAltitude: (alt: number) => GlobeInstance;
+  enablePointerInteraction: (val: boolean) => GlobeInstance;
+  width: (val: number) => GlobeInstance;
+  height: (val: number) => GlobeInstance;
+  controls: () => { autoRotate: boolean; autoRotateSpeed: number; enableZoom: boolean };
+  // Points
+  pointsData: (data: object[]) => GlobeInstance;
+  pointAltitude: (key: string) => GlobeInstance;
+  pointColor: (key: string) => GlobeInstance;
+  pointRadius: (key: string) => GlobeInstance;
+  // Arcs
+  arcsData: (data: object[]) => GlobeInstance;
+  arcColor: (key: string) => GlobeInstance;
+  arcAltitudeAutoScale: (val: number) => GlobeInstance;
+  arcStroke: (val: number) => GlobeInstance;
+  arcDashLength: (val: number) => GlobeInstance;
+  arcDashGap: (val: number) => GlobeInstance;
+  arcDashAnimateTime: (val: number) => GlobeInstance;
 }

@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+
+@theme {
+  --font-display: var(--font-orbitron), monospace;
+  --font-body: var(--font-sora), sans-serif;
+}
+
 :root {
   --background: #0a0a0f;
   --foreground: #e8e8f0;
@@ -40,4 +46,13 @@ body::before {
     );
   pointer-events: none;
   z-index: 0;
+}
+
+@keyframes float-particle {
+  0% { transform: translateY(0px) translateX(0px); }
+  100% { transform: translateY(-30px) translateX(12px); }
+}
+@keyframes scroll-line {
+  0% { transform: translateY(-100%); opacity: 1; }
+  100% { transform: translateY(250%); opacity: 0; }
 }
