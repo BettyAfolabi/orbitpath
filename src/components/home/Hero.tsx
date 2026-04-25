@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useISSPosition } from "@/hooks/useISSPosition";
 
 // Floating particle — purely decorative
@@ -16,14 +16,21 @@ interface Particle {
 }
 
 function generateParticles(count: number): Particle[] {
+  // Simple seeded PRNG — same output every time, no hydration mismatch
+  let seed = 42;
+  const rand = () => {
+    seed = (seed * 16807 + 0) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 2 + 0.5,
-    duration: Math.random() * 20 + 15,
-    delay: Math.random() * 10,
-    opacity: Math.random() * 0.5 + 0.1,
+    x: rand() * 100,
+    y: rand() * 100,
+    size: rand() * 2 + 0.5,
+    duration: rand() * 20 + 15,
+    delay: rand() * 10,
+    opacity: rand() * 0.5 + 0.1,
   }));
 }
 
@@ -33,7 +40,6 @@ export default function Hero() {
   const [mounted, setMounted] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [wordVisible, setWordVisible] = useState(true);
-  const [particles] = useState<Particle[]>(() => generateParticles(40));
   const { position } = useISSPosition(5000);
 
   // Staggered mount
@@ -54,13 +60,15 @@ export default function Hero() {
     return () => clearInterval(cycle);
   }, []);
 
+  const particles = useMemo(() => generateParticles(40), []);
+
 
   return (
     <section className="relative w-full h-full flex flex-col justify-center px-8 md:px-14 lg:px-20 py-20 overflow-hidden">
 
       {/* ── Floating particles ── */}
       <div className="absolute inset-0 pointer-events-none">
-        {particles.map((p) => (
+       {particles.map((p) => (
           <span
             key={p.id}
             className="absolute rounded-full bg-cyan-400"
