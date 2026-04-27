@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { submitQuiz } from "./actions";
 import { useQuizState } from "@/hooks/useQuizState";
 import ProgressBar from "@/components/pathfinder/ProgressBar";
 import QuizStep from "@/components/pathfinder/QuizStep";
@@ -10,9 +11,13 @@ import EducationStep from "@/components/pathfinder/EducationStep";
 import GoalsStep from "@/components/pathfinder/GoalStep";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function PathfinderPage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const {
     step,
     direction,
@@ -27,9 +32,20 @@ export default function PathfinderPage() {
     totalSteps,
   } = useQuizState();
 
-  const handleSubmit = () => {
-    router.push("/pathfinder/result");
-  };
+  async function handleSubmit() {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      const answers = JSON.parse(
+        sessionStorage.getItem("launchpad_quiz_answers") ?? "{}"
+      );
+      const { id } = await submitQuiz(answers);
+      router.push(`/pathfinder/result?id=${id}`);
+    } catch (err) {
+      setSubmitError("Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
+  }
 
   const isLast = step === totalSteps - 1;
 
@@ -142,13 +158,10 @@ export default function PathfinderPage() {
           {isLast ? (
             <button
               onClick={handleSubmit}
-              disabled={!isStepValid(step)}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-linear-to-r from-sky-500 to-violet-500 text-white disabled:opacity-30 disabled:cursor-not-allowed hover:from-sky-400 hover:to-violet-400 transition-all duration-200 shadow-[0_0_20px_rgba(56,189,248,0.2)]"
+              disabled={isSubmitting}
+              className="..."
             >
-              Generate My Roadmap
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              {isSubmitting ? "Generating your roadmap..." : "Launch My Roadmap 🚀"}
             </button>
           ) : (
             <button
@@ -161,6 +174,9 @@ export default function PathfinderPage() {
                 <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
+          )}
+          {submitError && (
+            <p className="mt-2 text-sm text-red-400">{submitError}</p>
           )}
         </motion.div>
       </div>

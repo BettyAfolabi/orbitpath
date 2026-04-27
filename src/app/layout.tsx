@@ -15,7 +15,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "Launchpad — Space Career Pathfinder",
+  title: "OrbitPath — Space Career Pathfinder",
   description: "AI-powered career roadmaps for the next generation of space explorers.",
 };
 
