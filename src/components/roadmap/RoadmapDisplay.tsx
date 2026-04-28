@@ -28,12 +28,25 @@ export default function RoadmapDisplay({ roadmap, roadmapId }: Props) {
           {roadmap.summary}
         </p>
 
-        {/* Career track badge */}
-        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/10 px-4 py-2">
-          <span className="h-2 w-2 rounded-full bg-sky-400" />
-          <span className="text-sm font-medium text-sky-300">
-            {roadmap.career_track}
-          </span>
+        {/* Career track reveal */}
+        <div className="mt-10 flex flex-col items-center gap-3">
+          <p className="text-xs font-medium uppercase tracking-widest text-white/30">
+            Your career destination
+          </p>
+          <div className="relative flex items-center justify-center">
+            {/* Glow behind */}
+            <div className="absolute h-16 w-72 rounded-full bg-sky-500/20 blur-2xl" />
+            {/* Main pill */}
+            <div className="relative rounded-2xl border border-sky-400/40 bg-linear-to-br from-sky-500/20 to-violet-500/10 px-8 py-4 backdrop-blur-sm">
+              <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                {roadmap.career_track}
+              </p>
+            </div>
+          </div>
+          {/* Connector line down to phases */}
+          <div className="mt-2 h-8 w-px bg-linear-to-b from-sky-400/40 to-transparent" />
+          <p className="text-sm text-white/30">Here‘s how to get there</p>
+          <div className="h-6 w-px bg-linear-to-b from-white/10 to-transparent" />
         </div>
       </div>
 
@@ -79,7 +92,7 @@ export default function RoadmapDisplay({ roadmap, roadmapId }: Props) {
       <ProgramsList programs={roadmap.recommended_programs} />
 
       {/* Encouragement */}
-      <div className="mt-16 rounded-2xl border border-white/10 bg-gradient-to-br from-sky-500/10 to-violet-500/10 p-8 text-center">
+      <div className="mt-16 mb-8 rounded-2xl border border-white/10 bg-linear-to-br from-sky-500/10 to-violet-500/10 p-8 text-center">
         <p className="text-lg font-medium italic text-white/80">
           &ldquo;{roadmap.encouragement}&rdquo;
         </p>

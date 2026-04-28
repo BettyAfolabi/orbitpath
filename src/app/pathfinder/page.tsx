@@ -11,12 +11,18 @@ import EducationStep from "@/components/pathfinder/EducationStep";
 import GoalsStep from "@/components/pathfinder/GoalStep";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PathfinderPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const quiz = useQuizState();
+
+  useEffect(() => {
+    quiz.reset();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // only on mount
 
   const {
     step,
@@ -37,7 +43,7 @@ export default function PathfinderPage() {
     setSubmitError(null);
     try {
       const answers = JSON.parse(
-        sessionStorage.getItem("launchpad_quiz_answers") ?? "{}"
+        sessionStorage.getItem("orbitpath_quiz_answers") ?? "{}"
       );
       const { id } = await submitQuiz(answers);
       router.push(`/pathfinder/result?id=${id}`);

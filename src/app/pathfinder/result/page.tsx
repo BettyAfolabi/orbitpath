@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import RoadmapDisplay from "@/components/roadmap/RoadmapDisplay";
 import Link from "next/link";
 import { Roadmap } from "@/lib/generateRoadmap";
+import FeedbackBar from "@/components/roadmap/FeedbackBar";
 
 type Props = {
   searchParams: Promise<{ id?: string }>;
@@ -32,6 +33,7 @@ export default async function ResultPage({ searchParams }: Props) {
         roadmap={data.roadmap as Roadmap}
         roadmapId={data.id}
       />
+      <FeedbackBar roadmapId={data.id} />
     </main>
   );
 }
