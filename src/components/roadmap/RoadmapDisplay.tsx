@@ -1,3 +1,6 @@
+"use client"; 
+
+import { motion } from "framer-motion";
 import { Roadmap } from "@/lib/generateRoadmap";
 import RecommendationCard from "./RecommendationCard";
 import ProgramsList from "./ProgramsList";
@@ -51,11 +54,32 @@ export default function RoadmapDisplay({ roadmap, roadmapId }: Props) {
       </div>
 
       {/* Phases */}
-      <div className="space-y-16">
+      <motion.div
+        className="space-y-16"
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: {},
+          show: { transition: { staggerChildren: 0.18, delayChildren: 0.3 } },
+        }}
+      >
         {roadmap.phases.map((phase, phaseIndex) => {
-          const accent = PHASE_ACCENTS[phaseIndex % PHASE_ACCENTS.length];
+          const accent = PHASE_ACCENTS[phaseIndex % PHASE_ACCENTS.length]; 
           return (
-            <div key={phase.id}>
+            <motion.div
+              key={phase.id}
+              variants={{
+                hidden: { opacity: 0, x: -20 },
+                show: {
+                  opacity: 1,
+                  x: 0,
+                  transition: {
+                    duration: 0.55,
+                    ease: [0.21, 0.47, 0.32, 0.98] as [number, number, number, number],
+                  },
+                },
+              }}
+            >
               {/* Phase header */}
               <div
                 className={`mb-6 flex items-center gap-4 border-l-2 pl-4 ${accent.border}`}
@@ -72,21 +96,42 @@ export default function RoadmapDisplay({ roadmap, roadmapId }: Props) {
               </div>
 
               {/* Milestone cards */}
-              <div className="grid gap-4 sm:grid-cols-2">
+              <motion.div
+                className="grid gap-4 sm:grid-cols-2"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+                variants={{
+                  hidden: {},
+                  show: { transition: { staggerChildren: 0.1 } },
+                }}
+              >
                 {phase.milestones.map((milestone, milestoneIndex) => (
-                  <RecommendationCard
+                  <motion.div
                     key={milestone.id}
-                    milestone={milestone}
-                    phaseIndex={phaseIndex}
-                    milestoneIndex={milestoneIndex}
-                    roadmapId={roadmapId}
-                  />
+                    variants={{
+                      hidden: { opacity: 0, y: 12 },
+                      show: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.4, ease: "easeOut" },
+                      },
+                    }}
+                  >
+                    <RecommendationCard
+                      key={milestone.id}
+                      milestone={milestone}
+                      phaseIndex={phaseIndex}
+                      milestoneIndex={milestoneIndex}
+                      roadmapId={roadmapId}
+                    />
+                  </motion.div>
                 ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              </motion.div>
+            </motion.div>
+          );  
+          })}
+        </motion.div>
 
       {/* Recommended Programs */}
       <ProgramsList programs={roadmap.recommended_programs} />

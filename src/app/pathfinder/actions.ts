@@ -6,7 +6,7 @@ import { generateRoadmap, QuizAnswers } from "@/lib/generateRoadmap";
 export async function submitQuiz(
   answers: QuizAnswers
 ): Promise<{ id: string }> {
-  // Generate roadmap via Gemini
+  // Generate roadmap via Groq
   const roadmap = await generateRoadmap(answers);
 
   // Save answers + roadmap to Supabase

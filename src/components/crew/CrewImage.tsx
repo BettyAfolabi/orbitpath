@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useState } from "react";
 
@@ -13,6 +12,7 @@ interface CrewImageProps {
   sizes?: string;
   priority?: boolean;
   className?: string;
+  loading?: "eager" | "lazy";  
 }
 
 export default function CrewImage({
@@ -22,9 +22,9 @@ export default function CrewImage({
   sizes,
   priority,
   className,
+  loading, 
 }: CrewImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
-
   return (
     <Image
       src={imgSrc}
@@ -33,6 +33,7 @@ export default function CrewImage({
       sizes={sizes}
       priority={priority}
       className={className}
+      loading={loading}  
       onError={() => setImgSrc(FALLBACK)}
     />
   );

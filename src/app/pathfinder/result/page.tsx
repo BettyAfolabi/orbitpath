@@ -28,7 +28,7 @@ export default async function ResultPage({ searchParams }: Props) {
   }
 
   return (
-    <main className="min-h-screen bg-[#080B14]">
+    <main className="min-h-screen bg-[#080B14] pb-28 md:pb-20">
       <RoadmapDisplay
         roadmap={data.roadmap as Roadmap}
         roadmapId={data.id}

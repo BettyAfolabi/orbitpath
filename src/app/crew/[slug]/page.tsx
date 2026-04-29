@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const member = getCrewBySlug(slug);
   if (!member) return { title: "Not Found" };
   return {
-    title: `${member.name} — Artemis II Crew | Launchpad`,
+    title: `${member.name} — Artemis II Crew | OrbithPath`,
     description: member.shortBio,
   };
 }
@@ -33,14 +33,15 @@ export default async function CrewProfilePage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* Back nav */}
-      <div className="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-black/80 backdrop-blur-md border-b border-white/4">
+
+      {/* Fixed nav */}
+      <div className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 bg-black/80 backdrop-blur-md border-b border-white/4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <Link href="/" className="text-sm text-slate-500 hover:text-white transition-colors">
+          <div className="flex items-center gap-3 md:gap-5">
+            <Link href="/" className="text-sm text-slate-500 hover:text-white transition-colors hidden sm:block">
               Home
             </Link>
-            <span className="text-slate-700">·</span>
+            <span className="text-slate-700 hidden sm:block">·</span>
             <Link href="/crew" className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
               ← All Crew
             </Link>
@@ -49,8 +50,7 @@ export default async function CrewProfilePage({ params }: Props) {
         </div>
       </div>
 
-      {/* Hero */}
-      <section className="relative pt-20 min-h-[60vh] flex items-end overflow-hidden">
+      <section className="relative pt-16 min-h-[55vh] md:min-h-[60vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <CrewImage
             src={member.image}
@@ -63,51 +63,52 @@ export default async function CrewProfilePage({ params }: Props) {
           <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-black/20" />
           <div className="absolute inset-0 bg-linear-to-r from-black/60 to-transparent" />
         </div>
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pb-16 w-full">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 pb-10 md:pb-16 w-full">
           <div className="max-w-xl">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-3 mb-3 md:mb-4">
               <span className="text-[10px] font-mono tracking-[0.3em] text-blue-400 uppercase">{member.agency}</span>
               <span className="w-1 h-1 rounded-full bg-slate-600" />
               <span className="text-[10px] font-mono tracking-[0.3em] text-slate-400 uppercase">{member.nationality}</span>
             </div>
-            <p className="text-xs tracking-[0.25em] text-blue-300 uppercase font-mono mb-3">{member.role}</p>
-            <h1 className="text-5xl md:text-6xl font-light tracking-tight mb-4">{member.name}</h1>
-            <p className="text-slate-300 text-base leading-relaxed max-w-lg">{member.shortBio}</p>
+            <p className="text-xs tracking-[0.25em] text-blue-300 uppercase font-mono mb-2 md:mb-3">{member.role}</p>
+            <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-3 md:mb-4">{member.name}</h1>
+            <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-lg">{member.shortBio}</p>
           </div>
         </div>
       </section>
 
-      {/* Stats bar */}
       <div className="relative z-10 border-y border-white/6 bg-black/80 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/6">
+        <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/6">
             {member.stats.map((stat) => (
-              <div key={stat.label} className="py-6 px-6 text-center">
-                <div className="text-2xl font-light text-white mb-1">{stat.value}</div>
-                <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase">{stat.label}</div>
+              <div key={stat.label} className="py-5 md:py-6 px-4 md:px-6 text-center">
+                <div className="text-xl md:text-2xl font-light text-white mb-1">{stat.value}</div>
+                <div className="text-[10px] font-mono tracking-widest text-slate-500 uppercase leading-snug">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Content */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-10">
+      {/* Main content */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 py-14 md:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+
+          {/* Bio + specialization + missions */}
+          <div className="lg:col-span-2 space-y-8 md:space-y-10">
             <div>
-              <h2 className="text-xs tracking-[0.3em] text-blue-400 uppercase font-mono mb-5">Biography</h2>
-              <p className="text-slate-300 leading-[1.85] text-[15px]">{member.bio}</p>
+              <h2 className="text-xs tracking-[0.3em] text-blue-400 uppercase font-mono mb-4 md:mb-5">Biography</h2>
+              <p className="text-slate-300 leading-[1.85] text-sm md:text-[15px]">{member.bio}</p>
             </div>
             <div>
-              <h2 className="text-xs tracking-[0.3em] text-blue-400 uppercase font-mono mb-4">Specialization</h2>
+              <h2 className="text-xs tracking-[0.3em] text-blue-400 uppercase font-mono mb-3 md:mb-4">Specialization</h2>
               <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-full border border-blue-500/30 bg-blue-500/10">
-                <span className="w-2 h-2 rounded-full bg-blue-400" />
+                <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
                 <span className="text-sm text-blue-200">{member.specialization}</span>
               </div>
             </div>
             <div>
-              <h2 className="text-xs tracking-[0.3em] text-blue-400 uppercase font-mono mb-4">Previous Missions</h2>
+              <h2 className="text-xs tracking-[0.3em] text-blue-400 uppercase font-mono mb-3 md:mb-4">Previous Missions</h2>
               {member.previousMissions.length > 0 ? (
                 <ul className="space-y-2">
                   {member.previousMissions.map((m) => (
@@ -125,25 +126,26 @@ export default async function CrewProfilePage({ params }: Props) {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="rounded-2xl border border-white/6 bg-white/2 p-6">
-              <h3 className="text-xs tracking-[0.25em] text-amber-400 uppercase font-mono mb-4">Did You Know</h3>
+          {/* Sidebar cards */}
+          <div className="space-y-4 md:space-y-6">
+            <div className="rounded-2xl border border-white/6 bg-white/2 p-5 md:p-6">
+              <h3 className="text-xs tracking-[0.25em] text-amber-400 uppercase font-mono mb-3 md:mb-4">Did You Know</h3>
               <p className="text-sm text-slate-300 leading-relaxed">{member.funFact}</p>
             </div>
             {member.socials && (
-              <div className="rounded-2xl border border-white/6 bg-white/2 p-6">
-                <h3 className="text-xs tracking-[0.25em] text-slate-400 uppercase font-mono mb-4">More</h3>
+              <div className="rounded-2xl border border-white/6 bg-white/2 p-5 md:p-6">
+                <h3 className="text-xs tracking-[0.25em] text-slate-400 uppercase font-mono mb-3 md:mb-4">More</h3>
                 <div className="space-y-2">
                   {member.socials.nasa && (
                     <a href={member.socials.nasa} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-between text-sm text-slate-400 hover:text-white transition-colors group">
+                      className="flex items-center justify-between text-sm text-slate-400 hover:text-white transition-colors group py-1">
                       <span>NASA Profile</span>
                       <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                     </a>
                   )}
                   {member.socials.twitter && (
                     <a href={member.socials.twitter} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-between text-sm text-slate-400 hover:text-white transition-colors group">
+                      className="flex items-center justify-between text-sm text-slate-400 hover:text-white transition-colors group py-1">
                       <span>Twitter / X</span>
                       <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                     </a>
@@ -151,7 +153,7 @@ export default async function CrewProfilePage({ params }: Props) {
                 </div>
               </div>
             )}
-            <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-6">
+            <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5 md:p-6">
               <p className="text-xs tracking-[0.2em] text-blue-400 uppercase font-mono mb-3">Inspired?</p>
               <p className="text-sm text-slate-300 mb-4 leading-relaxed">
                 Discover what skills, degrees, and programs could take you to space.
@@ -165,28 +167,28 @@ export default async function CrewProfilePage({ params }: Props) {
         </div>
       </section>
 
-      {/* Crew nav */}
-      <section className="border-t border-white/4 bg-black">
-        <div className="max-w-6xl mx-auto px-6 py-8">
+      {/* Crew prev/next nav */}
+      <section className="border-t border-white/4 bg-black mb-3 xl:mb-1">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-8">
           <div className="flex items-center justify-between gap-4">
             {prev ? (
-              <Link href={`/crew/${prev.slug}`} className="group flex items-center gap-4 hover:opacity-80 transition-opacity">
-                <div className="w-10 h-10 rounded-full overflow-hidden relative shrink-0 border border-white/10">
+              <Link href={`/crew/${prev.slug}`} className="group flex items-center gap-3 md:gap-4 hover:opacity-80 transition-opacity min-w-0">
+                <div className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden relative shrink-0 border border-white/10">
                   <CrewImage src={prev.image} alt={prev.name} fill className="object-cover object-top grayscale" sizes="40px" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-[10px] text-slate-600 font-mono uppercase tracking-widest">Previous</p>
-                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors">← {prev.name}</p>
+                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors truncate">← {prev.name}</p>
                 </div>
               </Link>
             ) : <div />}
             {next ? (
-              <Link href={`/crew/${next.slug}`} className="group flex items-center gap-4 text-right hover:opacity-80 transition-opacity">
-                <div>
+              <Link href={`/crew/${next.slug}`} className="group flex items-center gap-3 md:gap-4 text-right hover:opacity-80 transition-opacity min-w-0">
+                <div className="min-w-0">
                   <p className="text-[10px] text-slate-600 font-mono uppercase tracking-widest">Next</p>
-                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors">{next.name} →</p>
+                  <p className="text-sm text-slate-300 group-hover:text-white transition-colors truncate">{next.name} →</p>
                 </div>
-                <div className="w-10 h-10 rounded-full overflow-hidden relative shrink-0 border border-white/10">
+                <div className="w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden relative shrink-0 border border-white/10">
                   <CrewImage src={next.image} alt={next.name} fill className="object-cover object-top grayscale" sizes="40px" />
                 </div>
               </Link>
