@@ -9,8 +9,8 @@ export type QuizAnswers = {
   goals: string;
 };
 
-const STORAGE_KEY = "launchpad_quiz_answers";
-const STEP_KEY = "launchpad_quiz_step";
+const STORAGE_KEY = "orbitpath_quiz_answers";
+const STEP_KEY = "orbitpath_quiz_step";
 
 const defaultAnswers: QuizAnswers = {
   skills: [],

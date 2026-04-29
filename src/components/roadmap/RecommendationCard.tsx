@@ -5,7 +5,6 @@ type Props = {
   phaseIndex: number;
   milestoneIndex: number;
   roadmapId: string;
-  // Day 6 will replace this stub with LabelingWidget
   onRate?: (milestoneId: string, rating: number) => void;
 };
 
