@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Roadmap } from "@/lib/generateRoadmap";
 import RecommendationCard from "./RecommendationCard";
 import ProgramsList from "./ProgramsList";
+import dynamic from "next/dynamic";
 
 type Props = {
   roadmap: Roadmap;
@@ -16,9 +17,20 @@ const PHASE_ACCENTS = [
   { border: "border-emerald-500/30", dot: "bg-emerald-400", label: "text-emerald-400" },
 ];
 
+const DownloadButton = dynamic(() => import("./RoadmapDownloadButton"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-10 w-40 animate-pulse rounded-full bg-white/5" />
+  ),
+});
+
 export default function RoadmapDisplay({ roadmap, roadmapId }: Props) {
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-16">
+      <div className="mb-8 flex justify-end">
+        <DownloadButton roadmap={roadmap} />
+      </div>
       {/* Header */}
       <div className="mb-12 text-center">
         <p className="mb-3 text-xs font-medium uppercase tracking-widest text-sky-400">
