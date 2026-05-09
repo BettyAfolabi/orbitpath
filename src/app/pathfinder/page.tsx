@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import RoadmapLoadingScreen from "@/components/roadmap/RoadmapLoadingScreen";
+import CountryStep from "@/components/pathfinder/CountryStep";
 
 export default function PathfinderPage() {
   const router = useRouter();
@@ -22,6 +23,10 @@ export default function PathfinderPage() {
   const quiz = useQuizState();
 
   useEffect(() => {
+    try {
+      sessionStorage.removeItem("orbitpath_quiz_answers");
+      sessionStorage.removeItem("orbitpath_quiz_step");
+    } catch {}
     quiz.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -110,7 +115,7 @@ export default function PathfinderPage() {
             </span>
           </h1>
           <p className="text-slate-500 text-sm mt-2">
-            4 questions. A personalized roadmap. Built by AI.
+            5 questions. A personalized roadmap. Built by AI, tailored to where you are.
           </p>
         </motion.div>
 
@@ -127,18 +132,24 @@ export default function PathfinderPage() {
         <div className="min-h-90 md:min-h-90">
           <QuizStep stepKey={step} direction={direction}>
             {step === 0 && (
-              <SkillsStep selected={answers.skills} onToggle={toggleSkill} />
+              <CountryStep
+                selected={answers.country}
+                onSelect={(v) => updateAnswer("country", v)}
+              />
             )}
             {step === 1 && (
-              <InterestsStep selected={answers.interests} onToggle={toggleInterest} />
+              <SkillsStep selected={answers.skills} onToggle={toggleSkill} />
             )}
             {step === 2 && (
+              <InterestsStep selected={answers.interests} onToggle={toggleInterest} />
+            )}
+            {step === 3 && (
               <EducationStep
                 selected={answers.education}
                 onSelect={(v) => updateAnswer("education", v)}
               />
             )}
-            {step === 3 && (
+            {step === 4 && (
               <GoalsStep
                 selected={answers.goals}
                 onSelect={(v) => updateAnswer("goals", v)}

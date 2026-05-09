@@ -40,8 +40,11 @@ OrbitPath is a two-part application: a **live Artemis mission dashboard** that t
 - **Mission timeline** — scrolling sequence of Artemis I through Artemis V with status indicators
 
 ### Career Pathfinder
-- **4-step quiz** — captures skills, interests, education level, and career goals
+- **5-step quiz** — captures country, skills, interests, education level, and career goals
 - **AI roadmap generation** — Groq produces a structured multi-phase career roadmap personalised to your answers
+- **Localised recommendations** — universities, programs, and resources tailored to the user's country, prioritising regional institutions over default US/European ones
+- **Verified links** — every URL in the roadmap is checked server-side before delivery; broken paths are stripped to root domain or removed entirely
+- **Download as PDF** — users can save their personalised roadmap as a PDF for offline reference or sharing
 - **Data labeling loop** — users rate each recommendation, storing labeled data in Supabase for future model improvement
 
 ---
@@ -133,36 +136,39 @@ orbitpath/
 │   ├── pathfinder/
 │   │   ├── page.tsx              # Multi-step quiz
 │   │   ├── actions.ts            # Server action — calls Groq
-│   │   └── result/page.tsx       # AI roadmap display
+│   │   └── result/page.tsx       # AI roadmap display + PDF download
 │   └── api/label/route.ts        # Saves feedback to Supabase
 ├── components/
 │   ├── home/                     # Hero, ISSGlobe, StorySection, etc.
 │   ├── crew/                     # CrewGrid, CrewImage
-│   ├── pathfinder/               # Quiz step components
+│   ├── pathfinder/               # Quiz step components (incl. CountryStep)
 │   └── roadmap/                  # RoadmapDisplay, LabelingWidget, etc.
 ├── lib/
-│   ├── generateRoadmap.ts        # Groq API integration
+│   ├── generateRoadmap.ts        # Groq API integration + URL verification
 │   ├── nasa.ts                   # ISS position helpers
 │   └── supabase.ts               # Supabase client
-└── types/
-│    └── index.ts         
+├── types/
+│   └── index.ts
 ├── hooks/
 │   ├── useISSPosition.ts         # Polls ISS every 5s
 │   └── useQuizState.ts           # Multi-step quiz state
 └── data/
-    └── crew.ts                   # Artemis II crew + timeline data
+    ├── crew.ts                   # Artemis II crew + timeline data
+    └── countries.ts              # Country list for localisation
 ```
 
 ---
 
 ## How the AI Roadmap Works
 
-1. User completes the 4-step pathfinder quiz
+1. User completes the 5-step pathfinder quiz, starting with their country
 2. Answers are passed to a Next.js server action
-3. The server action calls Groq with a structured prompt
-4. Groq returns a JSON roadmap with phases, milestones, and recommended programs
-5. The roadmap is saved to Supabase and the user is redirected to their result page
-6. User rates each recommendation — labels are stored for dataset creation
+3. The server action calls Groq with a structured prompt that includes localisation rules based on the user's country
+4. Groq returns a JSON roadmap with phases, milestones, and recommended programs — prioritising regional universities and institutions
+5. Every URL in the roadmap is verified server-side in parallel — broken paths are stripped to their root domain or dropped entirely
+6. The roadmap is saved to Supabase and the user is redirected to their result page
+7. The user can download their roadmap as a PDF for offline reference or sharing
+8. The user rates each recommendation — labels are stored for dataset creation
 
 The labeling loop is intentional: every rating is a training signal. The long-term vision is a fine-tuned model that improves recommendations based on what real aspiring space professionals found useful.
 
