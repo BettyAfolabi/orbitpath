@@ -67,7 +67,12 @@ export interface GlobeInstance {
   enablePointerInteraction: (val: boolean) => GlobeInstance;
   width: (val: number) => GlobeInstance;
   height: (val: number) => GlobeInstance;
-  controls: () => { autoRotate: boolean; autoRotateSpeed: number; enableZoom: boolean };
+  controls: () => {
+    autoRotate: boolean;
+    autoRotateSpeed: number;
+    enableZoom: boolean;
+    enableRotate: boolean;
+  };
   // Points
   pointsData: (data: object[]) => GlobeInstance;
   pointAltitude: (key: string) => GlobeInstance;

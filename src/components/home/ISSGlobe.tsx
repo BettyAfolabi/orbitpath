@@ -35,6 +35,9 @@ export default function ISSGlobe() {
       globe.controls().autoRotate = true;
       globe.controls().autoRotateSpeed = 0.3;
       globe.controls().enableZoom = false;
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        globe.controls().enableRotate = false;
+      }
 
       globeRef.current = globe;
       setGlobeLoaded(true);
@@ -93,6 +96,7 @@ export default function ISSGlobe() {
       <div 
         ref={containerRef} 
         className={`w-full h-full transition-opacity duration-1000 ${globeLoaded && !loading ? 'opacity-100' : 'opacity-0'}`} 
+        style={{ touchAction: "pan-y" }}
       />
 
       <AnimatePresence>

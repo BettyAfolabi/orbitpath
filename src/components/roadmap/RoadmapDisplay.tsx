@@ -154,6 +154,13 @@ export default function RoadmapDisplay({ roadmap, roadmapId }: Props) {
           &ldquo;{roadmap.encouragement}&rdquo;
         </p>
       </div>
+
+      {/* Disclaimer */}
+      <p className="text-center text-xs leading-relaxed text-white/25">
+        This roadmap is AI-generated and intended as a starting point, not a guaranteed career plan.
+        Programs, deadlines, and links may change — always verify directly with institutions.
+        Your path is yours to shape.
+      </p>
     </div>
   );
 }
